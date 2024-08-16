@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,5 +30,10 @@ public class RoomServiceImpl implements RoomService {
             room.setPhoto(photoBlob);
         }
         return roomDao.save(room);
+    }
+
+    @Override
+    public List<String> getAllRoomType() {
+        return roomDao.findByRoomType();
     }
 }
