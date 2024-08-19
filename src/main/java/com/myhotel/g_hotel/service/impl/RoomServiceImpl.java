@@ -81,4 +81,9 @@ public class RoomServiceImpl implements RoomService {
         }
         return null;
     }
+
+    @Override
+    public Optional<Room> getRoomById(Long roomId) {
+        return Optional.of(roomDao.findById(roomId).get());
+    }
 }
