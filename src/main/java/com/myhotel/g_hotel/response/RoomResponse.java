@@ -13,6 +13,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class RoomResponse {
 
     private Long id;
@@ -38,4 +39,5 @@ public class RoomResponse {
         this.photo = photoByte != null ? Base64.encodeBase64String(photoByte):null;
         this.bookedRoomListRespnse = bookedRoomListRespnse;
     }
+
 }
