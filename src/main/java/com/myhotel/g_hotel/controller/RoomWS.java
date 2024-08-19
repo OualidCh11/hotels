@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Blob;
@@ -63,11 +64,23 @@ public class RoomWS {
     }
 
     @DeleteMapping("/delete/room/{roomId}")
-    public ResponseEntity<Void> deleteRoom(@PathVariable("roomId") Long roomId){
+    public ResponseEntity<Void> deleteRoom(@PathVariable Long roomId){
         roomService.deleteRoom(roomId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PutMapping("/update/{roomId}")
+    public ResponseEntity<RoomResponse> updateRoom(@PathVariable Long roomId ,@RequestParam(required = false) String roomType ,@RequestParam(required = false) BigDecimal priceRoom ,@RequestParam(required = false) MultipartFile photo ) throws IOException, SQLException {
+
+        byte[] photoBytes = photo != null && !photo.isEmpty()?
+                photo.getBytes(): roomService.getRoomPhotoByRoomId(roomId);
+        Blob photoBlob = photoBytes != null && photoBytes.length > 0?new SerialBlob(photoBytes): null;
+        Room theroom = roomService.updateRoom(roomId,roomType,priceRoom,photoBytes);
+        theroom.setPhoto(photoBlob);
+        RoomResponse roomResponse = getRoomRespnse(theroom);
+        return ResponseEntity.ok(roomResponse);
+
+    }
 
     private RoomResponse getRoomRespnse(Room room) {
         List<BookedRoom> bookedRoomList = getAllBookingByRoomId(room.getId());

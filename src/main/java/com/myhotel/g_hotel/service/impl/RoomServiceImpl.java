@@ -1,11 +1,11 @@
 package com.myhotel.g_hotel.service.impl;
 
 import com.myhotel.g_hotel.entity.Room;
+import com.myhotel.g_hotel.exception.IntenalServiceException;
 import com.myhotel.g_hotel.exception.ResourceNotFoundException;
 import com.myhotel.g_hotel.repository.RoomDao;
 import com.myhotel.g_hotel.service.inter.RoomService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -64,5 +64,21 @@ public class RoomServiceImpl implements RoomService {
         if(theRoom.isPresent()){
             roomDao.deleteById(roomId);
         }
+    }
+
+    @Override
+    public Room updateRoom(Long roomId, String roomType, BigDecimal priceRoom, byte[] photoBytes) {
+
+        Room room = roomDao.findById(roomId).orElseThrow(() -> new ResourceNotFoundException("Not found room"));
+        if (roomType != null)room.setRoomType(roomType);
+        if (priceRoom != null)room.setPriceRoom(priceRoom);
+        if (photoBytes != null && photoBytes.length > 0){
+            try{
+                room.setPhoto(new SerialBlob(photoBytes));
+            }catch (SQLException ex){
+                throw new IntenalServiceException("Error updating !!");
+            }
+        }
+        return null;
     }
 }
