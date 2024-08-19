@@ -24,8 +24,8 @@ public class RoomWS {
     public ResponseEntity<RoomResponse> addNewRoom(
             @RequestParam("photo")MultipartFile photo,
             @RequestParam("roomType")String roomType,
-            @RequestParam("roomPrice")BigDecimal roomPrice) throws SQLException, IOException {
-        Room saveRoom = roomService.addNewRoom(photo,roomType,roomPrice);
+            @RequestParam("priceRoom")BigDecimal priceRoom) throws SQLException, IOException {
+        Room saveRoom = roomService.addNewRoom(photo,roomType,priceRoom);
         RoomResponse roomResponse = new RoomResponse(saveRoom.getId(),
                 saveRoom.getRoomType(),saveRoom.getPriceRoom());
         return ResponseEntity.ok(roomResponse);
@@ -33,6 +33,7 @@ public class RoomWS {
 
     @GetMapping("/get/room_types")
     public List<String> getRoomTypes(){
+
         return roomService.getAllRoomType();
     }
 }

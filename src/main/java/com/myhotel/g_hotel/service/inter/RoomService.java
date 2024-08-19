@@ -9,6 +9,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface RoomService {
-    Room addNewRoom(MultipartFile file, String roomType, BigDecimal roomPrice) throws IOException, SQLException;
+    Room addNewRoom(MultipartFile file, String roomType, BigDecimal priceRoom) throws IOException, SQLException;
     List<String> getAllRoomType();
 }

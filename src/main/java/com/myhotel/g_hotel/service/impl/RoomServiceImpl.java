@@ -20,10 +20,10 @@ public class RoomServiceImpl implements RoomService {
 
     private final RoomDao roomDao;
     @Override
-    public Room addNewRoom(MultipartFile file, String roomType, BigDecimal roomPrice) throws IOException, SQLException {
+    public Room addNewRoom(MultipartFile file, String roomType, BigDecimal priceRoom) throws IOException, SQLException {
         Room room = new Room();
         room.setRoomType(roomType);
-        room.setPriceRoom(roomPrice);
+        room.setPriceRoom(priceRoom);
         if (!file.isEmpty()){
             byte[] photoBytes = file.getBytes();
             Blob photoBlob = new SerialBlob(photoBytes);
