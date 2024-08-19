@@ -11,4 +11,8 @@ import java.util.List;
 public interface RoomService {
     Room addNewRoom(MultipartFile file, String roomType, BigDecimal priceRoom) throws IOException, SQLException;
     List<String> getAllRoomType();
+
+    List<Room> getAllRooms();
+
+    byte[] getRoomPhotoByRoomId(Long roomId) throws SQLException;
 }
