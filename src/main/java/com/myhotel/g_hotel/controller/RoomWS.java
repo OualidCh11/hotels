@@ -3,9 +3,9 @@ package com.myhotel.g_hotel.controller;
 import com.myhotel.g_hotel.entity.BookedRoom;
 import com.myhotel.g_hotel.entity.Room;
 import com.myhotel.g_hotel.exception.PhotoRetrievalException;
+import com.myhotel.g_hotel.exception.ResourceNotFoundException;
 import com.myhotel.g_hotel.response.BookedRoomRespnse;
 import com.myhotel.g_hotel.response.RoomResponse;
-import com.myhotel.g_hotel.service.impl.RoomServiceImpl;
 import com.myhotel.g_hotel.service.inter.BookedRoomService;
 import com.myhotel.g_hotel.service.inter.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +22,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -80,6 +81,15 @@ public class RoomWS {
         RoomResponse roomResponse = getRoomRespnse(theroom);
         return ResponseEntity.ok(roomResponse);
 
+    }
+
+    @GetMapping("/get/rooms/{id}")
+    public ResponseEntity<Optional<RoomResponse>> getRoomById(@PathVariable Long roomId){
+        Optional<Room> thrRoom = roomService.getRoomById(roomId);
+        return thrRoom.map(room -> {
+            RoomResponse roomResponse = getRoomRespnse(room);
+            return ResponseEntity.ok(Optional.of(roomResponse));
+        }).orElseThrow(() -> new ResourceNotFoundException("not found room"));
     }
 
     private RoomResponse getRoomRespnse(Room room) {
