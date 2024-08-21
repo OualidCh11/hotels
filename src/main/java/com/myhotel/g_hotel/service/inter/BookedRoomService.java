@@ -11,4 +11,6 @@ public interface BookedRoomService {
     List<BookedRoom> getAllBoking();
 
     BookedRoom findByConfirmationCode(String confirmationCode);
+
+    void cancelBooking(Long bookingId);
 }
