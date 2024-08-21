@@ -47,6 +47,7 @@ public class BookedRoomWS {
         }
     }
 
+
     @GetMapping("/room/{roomId}/booking ")
     public ResponseEntity<?> saveBooking(@PathVariable Long roomId ,
                                          @RequestBody BookedRoom bookedRoomRequest){
@@ -81,5 +82,10 @@ public class BookedRoomWS {
                 bookedRoom.getBookingConfirmationCode(),roomResponse
         );
     }
+
+    private BookedRoomRespnse getBookingResponse(BookedRoom bookedRoom) {
+        return null;
+    }
+
 }
 
