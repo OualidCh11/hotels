@@ -30,6 +30,9 @@ public class Room {
     @OneToMany(mappedBy = "room",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<BookedRoom> bookedRoomList;
 
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
     public Room() {
         this.bookedRoomList = new ArrayList<>();
     }
