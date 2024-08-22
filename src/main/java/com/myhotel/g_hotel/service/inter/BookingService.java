@@ -5,7 +5,7 @@ import com.myhotel.g_hotel.entity.Booking;
 
 import java.util.List;
 
-public interface BookedRoomService {
+public interface BookingService {
     List<Booking> getAllBookingByRoomsId(Long roomId);
 
     List<Booking> getAllBoking();

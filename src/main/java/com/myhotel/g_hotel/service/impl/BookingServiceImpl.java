@@ -3,8 +3,8 @@ package com.myhotel.g_hotel.service.impl;
 import com.myhotel.g_hotel.entity.Booking;
 import com.myhotel.g_hotel.entity.Room;
 import com.myhotel.g_hotel.exception.InvalidBookingException;
-import com.myhotel.g_hotel.repository.BookedRoomDao;
-import com.myhotel.g_hotel.service.inter.BookedRoomService;
+import com.myhotel.g_hotel.repository.BookingDao;
+import com.myhotel.g_hotel.service.inter.BookingService;
 import com.myhotel.g_hotel.service.inter.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,30 +13,30 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BookedRoomServiceImpl implements BookedRoomService {
+public class BookingServiceImpl implements BookingService {
 
-    private final BookedRoomDao bookedRoomDao;
+    private final BookingDao bookingDao;
     private final RoomService roomService;
 
     @Override
     public List<Booking> getAllBookingByRoomsId(Long roomId) {
 
-        return bookedRoomDao.findByRoomId(roomId);
+        return bookingDao.findByRoomId(roomId);
     }
 
     @Override
     public List<Booking> getAllBoking() {
-        return bookedRoomDao.findAll();
+        return bookingDao.findAll();
     }
 
     @Override
     public Booking findByConfirmationCode(String confirmationCode) {
-        return bookedRoomDao.findByBookingConfirmationCode(confirmationCode);
+        return bookingDao.findByBookingConfirmationCode(confirmationCode);
     }
 
     @Override
     public void cancelBooking(Long bookingId) {
-        bookedRoomDao.deleteById(bookingId);
+        bookingDao.deleteById(bookingId);
 
     }
 
@@ -51,7 +51,7 @@ public class BookedRoomServiceImpl implements BookedRoomService {
         boolean roomIsAvilable = roomIsAvilable(bookedRoomRequest,bookedRooms);
         if(roomIsAvilable){
             room.addBooking(bookedRoomRequest);
-            bookedRoomDao.save(bookedRoomRequest);
+            bookingDao.save(bookedRoomRequest);
         }else {
             throw new InvalidBookingException("sorry this room has been booked");
         }

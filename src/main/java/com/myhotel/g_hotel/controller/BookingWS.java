@@ -4,9 +4,9 @@ import com.myhotel.g_hotel.entity.Booking;
 import com.myhotel.g_hotel.entity.Room;
 import com.myhotel.g_hotel.exception.InvalidBookingException;
 import com.myhotel.g_hotel.exception.ResourceNotFoundException;
-import com.myhotel.g_hotel.response.BookedRoomRespnse;
+import com.myhotel.g_hotel.response.BookingRespnse;
 import com.myhotel.g_hotel.response.RoomResponse;
-import com.myhotel.g_hotel.service.inter.BookedRoomService;
+import com.myhotel.g_hotel.service.inter.BookingService;
 import com.myhotel.g_hotel.service.inter.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,28 +20,28 @@ import java.util.List;
 @RequestMapping("/booking")
 @RestController
 @RequiredArgsConstructor
-public class BookedRoomWS {
+public class BookingWS {
 
-    private final BookedRoomService bookedRoomService;
+    private final BookingService bookingService;
     private final RoomService roomService;
 
     @GetMapping("all_booking")
-    public ResponseEntity<List<BookedRoomRespnse>> getAllBooking(){
-        List<Booking> bookedRooms = bookedRoomService.getAllBoking();
-        List<BookedRoomRespnse> bookedRoomRespnses = new ArrayList<>();
+    public ResponseEntity<List<BookingRespnse>> getAllBooking(){
+        List<Booking> bookedRooms = bookingService.getAllBoking();
+        List<BookingRespnse> bookingRespns = new ArrayList<>();
         for(Booking bookedRoom: bookedRooms){
-            BookedRoomRespnse bookedRoomRespnse = getBookedRoomRespnse(bookedRoom);
-            bookedRoomRespnses.add(bookedRoomRespnse);
+            BookingRespnse bookingRespnse = getBookedRoomRespnse(bookedRoom);
+            bookingRespns.add(bookingRespnse);
         }
-        return ResponseEntity.ok(bookedRoomRespnses);
+        return ResponseEntity.ok(bookingRespns);
     }
 
     @GetMapping("/confirmation")
     public ResponseEntity<?> getBookingByConfirmationCode(String confirmationCode){
         try {
-            Booking bookedRoom = bookedRoomService.findByConfirmationCode(confirmationCode);
-            BookedRoomRespnse bookedRoomRespnse = getBookingResponse(bookedRoom);
-            return ResponseEntity.ok(bookedRoomRespnse);
+            Booking bookedRoom = bookingService.findByConfirmationCode(confirmationCode);
+            BookingRespnse bookingRespnse = getBookingResponse(bookedRoom);
+            return ResponseEntity.ok(bookingRespnse);
         }catch (ResourceNotFoundException ex){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
@@ -52,7 +52,7 @@ public class BookedRoomWS {
     public ResponseEntity<?> saveBooking(@PathVariable Long roomId ,
                                          @RequestBody Booking bookedRoomRequest){
         try {
-            String confirmationCode = bookedRoomService.saveBooking(roomId , bookedRoomRequest);
+            String confirmationCode = bookingService.saveBooking(roomId , bookedRoomRequest);
             return ResponseEntity.ok("Room booked successfully ,your code confirmation is:"+confirmationCode);
         }catch (InvalidBookingException ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
@@ -61,17 +61,17 @@ public class BookedRoomWS {
 
     @DeleteMapping("/booking/{bookingId}/delete")
     public void cancelBooking(Long bookingId){
-           bookedRoomService.cancelBooking(bookingId);
+           bookingService.cancelBooking(bookingId);
     }
 
-    private BookedRoomRespnse getBookedRoomRespnse(Booking bookedRoom) {
+    private BookingRespnse getBookedRoomRespnse(Booking bookedRoom) {
         Room theRoom = roomService.getRoomById(bookedRoom.getRoom().getId()).get();
         RoomResponse roomResponse = new RoomResponse(
                 theRoom.getId(),
                 theRoom.getRoomType(),
                 theRoom.getPriceRoom()
         );
-        return new BookedRoomRespnse(
+        return new BookingRespnse(
                 bookedRoom.getBookingId(),
                 bookedRoom.getCheckInDate(),
                 bookedRoom.getCheckOutDate(),
@@ -83,7 +83,7 @@ public class BookedRoomWS {
         );
     }
 
-    private BookedRoomRespnse getBookingResponse(Booking booking) {
+    private BookingRespnse getBookingResponse(Booking booking) {
         return null;
     }
 

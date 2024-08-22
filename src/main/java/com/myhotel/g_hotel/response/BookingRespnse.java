@@ -1,6 +1,5 @@
 package com.myhotel.g_hotel.response;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -8,7 +7,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookedRoomRespnse {
+public class BookingRespnse {
 
 
     private Long bookingId;
@@ -22,9 +21,9 @@ public class BookedRoomRespnse {
     private String bookingConfirmationCode;
     private RoomResponse roomResponse;
 
-    public BookedRoomRespnse(Long bookingId, LocalDate checkInDate,
-                             LocalDate checkOutDate,
-                             String bookingConfirmationCode) {
+    public BookingRespnse(Long bookingId, LocalDate checkInDate,
+                          LocalDate checkOutDate,
+                          String bookingConfirmationCode) {
         this.bookingId = bookingId;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;

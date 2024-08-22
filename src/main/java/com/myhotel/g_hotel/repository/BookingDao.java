@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BookedRoomDao extends JpaRepository<Booking, Long> {
+public interface BookingDao extends JpaRepository<Booking, Long> {
     List<Booking> findByRoomId(Long roomId);
     Booking findByBookingConfirmationCode(String confirmationCode);
 }

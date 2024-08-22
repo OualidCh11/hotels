@@ -4,9 +4,9 @@ import com.myhotel.g_hotel.entity.Booking;
 import com.myhotel.g_hotel.entity.Room;
 import com.myhotel.g_hotel.exception.PhotoRetrievalException;
 import com.myhotel.g_hotel.exception.ResourceNotFoundException;
-import com.myhotel.g_hotel.response.BookedRoomRespnse;
+import com.myhotel.g_hotel.response.BookingRespnse;
 import com.myhotel.g_hotel.response.RoomResponse;
-import com.myhotel.g_hotel.service.inter.BookedRoomService;
+import com.myhotel.g_hotel.service.inter.BookingService;
 import com.myhotel.g_hotel.service.inter.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -30,7 +30,7 @@ import java.util.Optional;
 public class RoomWS {
 
     private final RoomService roomService;
-    private final BookedRoomService bookedRoomService;
+    private final BookingService bookingService;
     @PostMapping("/add/new_room")
     public ResponseEntity<RoomResponse> addNewRoom(
             @RequestParam("photo")MultipartFile photo,
@@ -94,10 +94,10 @@ public class RoomWS {
 
     private RoomResponse getRoomRespnse(Room room) {
         List<Booking> bookedRoomList = getAllBookingByRoomId(room.getId());
-        List<BookedRoomRespnse> bookedRoomRespnses = new ArrayList<>();
+        List<BookingRespnse> bookingRespns = new ArrayList<>();
         if (bookedRoomList != null) {
-            bookedRoomRespnses = bookedRoomList.stream()
-                    .map(bookedRoom -> new BookedRoomRespnse(bookedRoom.getBookingId(),
+            bookingRespns = bookedRoomList.stream()
+                    .map(bookedRoom -> new BookingRespnse(bookedRoom.getBookingId(),
                             bookedRoom.getCheckInDate(),
                             bookedRoom.getCheckOutDate(),
                             bookedRoom.getBookingConfirmationCode()))
@@ -112,10 +112,10 @@ public class RoomWS {
                 throw new PhotoRetrievalException("Error retrieving photo");
             }
         }
-        return new RoomResponse(room.getId(), room.getRoomType(), room.getPriceRoom(), room.isBooked(), photBytes, bookedRoomRespnses);
+        return new RoomResponse(room.getId(), room.getRoomType(), room.getPriceRoom(), room.isBooked(), photBytes, bookingRespns);
     }
 
     private List<Booking> getAllBookingByRoomId(Long roomId) {
-        return bookedRoomService.getAllBookingByRoomsId(roomId);
+        return bookingService.getAllBookingByRoomsId(roomId);
     }
 }
