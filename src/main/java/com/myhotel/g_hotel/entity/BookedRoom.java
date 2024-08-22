@@ -37,6 +37,9 @@ public class BookedRoom {
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "room_id")
     private Room room;
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name = "guest_id")
+    private Guest guest;
 
     private void calculateTotalNbOfGuast(){
         this.totalNbOfGuest = this.nbOfAdults + this.nbOfChildren;

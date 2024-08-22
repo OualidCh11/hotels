@@ -1,13 +1,12 @@
 package com.myhotel.g_hotel.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,4 +24,12 @@ public class Guest {
     private String phoneNumber;
     private String address;
     private String identificationNumber;
+
+    @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<BookedRoom> bookedRooms;
+
+    public void addBooking(BookedRoom bookedRoom) {
+        bookedRooms.add(bookedRoom);
+        bookedRoom.setGuest(this);
+    }
 }
