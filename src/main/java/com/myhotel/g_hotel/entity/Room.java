@@ -3,7 +3,6 @@ package com.myhotel.g_hotel.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.RandomStringUtils;
 
@@ -28,7 +27,7 @@ public class Room {
     private Blob photo;
 
     @OneToMany(mappedBy = "room",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<BookedRoom> bookedRoomList;
+    private List<Booking> bookedRoomList;
 
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "hotel_id")
@@ -37,7 +36,7 @@ public class Room {
         this.bookedRoomList = new ArrayList<>();
     }
 
-    public void addBooking(BookedRoom bookedRoom){
+    public void addBooking(Booking bookedRoom){
         if(bookedRoomList == null){
             bookedRoomList = new ArrayList<>();
         }

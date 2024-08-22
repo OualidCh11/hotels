@@ -1,18 +1,18 @@
 package com.myhotel.g_hotel.service.inter;
 
 
-import com.myhotel.g_hotel.entity.BookedRoom;
+import com.myhotel.g_hotel.entity.Booking;
 
 import java.util.List;
 
 public interface BookedRoomService {
-    List<BookedRoom> getAllBookingByRoomsId(Long roomId);
+    List<Booking> getAllBookingByRoomsId(Long roomId);
 
-    List<BookedRoom> getAllBoking();
+    List<Booking> getAllBoking();
 
-    BookedRoom findByConfirmationCode(String confirmationCode);
+    Booking findByConfirmationCode(String confirmationCode);
 
     void cancelBooking(Long bookingId);
 
-    String saveBooking(Long roomId, BookedRoom bookedRoomRequest);
+    String saveBooking(Long roomId, Booking bookedRoomRequest);
 }

@@ -1,6 +1,6 @@
 package com.myhotel.g_hotel.controller;
 
-import com.myhotel.g_hotel.entity.BookedRoom;
+import com.myhotel.g_hotel.entity.Booking;
 import com.myhotel.g_hotel.entity.Room;
 import com.myhotel.g_hotel.exception.PhotoRetrievalException;
 import com.myhotel.g_hotel.exception.ResourceNotFoundException;
@@ -93,7 +93,7 @@ public class RoomWS {
     }
 
     private RoomResponse getRoomRespnse(Room room) {
-        List<BookedRoom> bookedRoomList = getAllBookingByRoomId(room.getId());
+        List<Booking> bookedRoomList = getAllBookingByRoomId(room.getId());
         List<BookedRoomRespnse> bookedRoomRespnses = new ArrayList<>();
         if (bookedRoomList != null) {
             bookedRoomRespnses = bookedRoomList.stream()
@@ -115,7 +115,7 @@ public class RoomWS {
         return new RoomResponse(room.getId(), room.getRoomType(), room.getPriceRoom(), room.isBooked(), photBytes, bookedRoomRespnses);
     }
 
-    private List<BookedRoom> getAllBookingByRoomId(Long roomId) {
+    private List<Booking> getAllBookingByRoomId(Long roomId) {
         return bookedRoomService.getAllBookingByRoomsId(roomId);
     }
 }

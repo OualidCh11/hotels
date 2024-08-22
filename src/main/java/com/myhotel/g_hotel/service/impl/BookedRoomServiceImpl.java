@@ -1,6 +1,6 @@
 package com.myhotel.g_hotel.service.impl;
 
-import com.myhotel.g_hotel.entity.BookedRoom;
+import com.myhotel.g_hotel.entity.Booking;
 import com.myhotel.g_hotel.entity.Room;
 import com.myhotel.g_hotel.exception.InvalidBookingException;
 import com.myhotel.g_hotel.repository.BookedRoomDao;
@@ -9,7 +9,6 @@ import com.myhotel.g_hotel.service.inter.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,18 +19,18 @@ public class BookedRoomServiceImpl implements BookedRoomService {
     private final RoomService roomService;
 
     @Override
-    public List<BookedRoom> getAllBookingByRoomsId(Long roomId) {
+    public List<Booking> getAllBookingByRoomsId(Long roomId) {
 
         return bookedRoomDao.findByRoomId(roomId);
     }
 
     @Override
-    public List<BookedRoom> getAllBoking() {
+    public List<Booking> getAllBoking() {
         return bookedRoomDao.findAll();
     }
 
     @Override
-    public BookedRoom findByConfirmationCode(String confirmationCode) {
+    public Booking findByConfirmationCode(String confirmationCode) {
         return bookedRoomDao.findByBookingConfirmationCode(confirmationCode);
     }
 
@@ -42,13 +41,13 @@ public class BookedRoomServiceImpl implements BookedRoomService {
     }
 
     @Override
-    public String saveBooking(Long roomId, BookedRoom bookedRoomRequest) {
+    public String saveBooking(Long roomId, Booking bookedRoomRequest) {
 
         if(bookedRoomRequest.getCheckOutDate().isBefore(bookedRoomRequest.getCheckInDate())){
             throw new InvalidBookingException("check in-date");
         }
         Room room = roomService.getRoomById(roomId).get();
-        List<BookedRoom> bookedRooms = room.getBookedRoomList();
+        List<Booking> bookedRooms = room.getBookedRoomList();
         boolean roomIsAvilable = roomIsAvilable(bookedRoomRequest,bookedRooms);
         if(roomIsAvilable){
             room.addBooking(bookedRoomRequest);
@@ -60,7 +59,7 @@ public class BookedRoomServiceImpl implements BookedRoomService {
 
     }
 
-    private boolean roomIsAvilable(BookedRoom bookedRoomRequest, List<BookedRoom> bookedRoomss) {
+    private boolean roomIsAvilable(Booking bookedRoomRequest, List<Booking> bookedRoomss) {
         return bookedRoomss.stream()
                 .noneMatch(bookedRooms ->
                         bookedRoomRequest.getCheckInDate().equals(bookedRooms.getCheckInDate())

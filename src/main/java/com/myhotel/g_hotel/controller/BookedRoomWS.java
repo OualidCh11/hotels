@@ -1,6 +1,6 @@
 package com.myhotel.g_hotel.controller;
 
-import com.myhotel.g_hotel.entity.BookedRoom;
+import com.myhotel.g_hotel.entity.Booking;
 import com.myhotel.g_hotel.entity.Room;
 import com.myhotel.g_hotel.exception.InvalidBookingException;
 import com.myhotel.g_hotel.exception.ResourceNotFoundException;
@@ -27,9 +27,9 @@ public class BookedRoomWS {
 
     @GetMapping("all_booking")
     public ResponseEntity<List<BookedRoomRespnse>> getAllBooking(){
-        List<BookedRoom> bookedRooms = bookedRoomService.getAllBoking();
+        List<Booking> bookedRooms = bookedRoomService.getAllBoking();
         List<BookedRoomRespnse> bookedRoomRespnses = new ArrayList<>();
-        for(BookedRoom bookedRoom: bookedRooms){
+        for(Booking bookedRoom: bookedRooms){
             BookedRoomRespnse bookedRoomRespnse = getBookedRoomRespnse(bookedRoom);
             bookedRoomRespnses.add(bookedRoomRespnse);
         }
@@ -39,7 +39,7 @@ public class BookedRoomWS {
     @GetMapping("/confirmation")
     public ResponseEntity<?> getBookingByConfirmationCode(String confirmationCode){
         try {
-            BookedRoom bookedRoom = bookedRoomService.findByConfirmationCode(confirmationCode);
+            Booking bookedRoom = bookedRoomService.findByConfirmationCode(confirmationCode);
             BookedRoomRespnse bookedRoomRespnse = getBookingResponse(bookedRoom);
             return ResponseEntity.ok(bookedRoomRespnse);
         }catch (ResourceNotFoundException ex){
@@ -50,7 +50,7 @@ public class BookedRoomWS {
 
     @GetMapping("/room/{roomId}/booking ")
     public ResponseEntity<?> saveBooking(@PathVariable Long roomId ,
-                                         @RequestBody BookedRoom bookedRoomRequest){
+                                         @RequestBody Booking bookedRoomRequest){
         try {
             String confirmationCode = bookedRoomService.saveBooking(roomId , bookedRoomRequest);
             return ResponseEntity.ok("Room booked successfully ,your code confirmation is:"+confirmationCode);
@@ -64,7 +64,7 @@ public class BookedRoomWS {
            bookedRoomService.cancelBooking(bookingId);
     }
 
-    private BookedRoomRespnse getBookedRoomRespnse(BookedRoom bookedRoom) {
+    private BookedRoomRespnse getBookedRoomRespnse(Booking bookedRoom) {
         Room theRoom = roomService.getRoomById(bookedRoom.getRoom().getId()).get();
         RoomResponse roomResponse = new RoomResponse(
                 theRoom.getId(),
@@ -83,7 +83,7 @@ public class BookedRoomWS {
         );
     }
 
-    private BookedRoomRespnse getBookingResponse(BookedRoom bookedRoom) {
+    private BookedRoomRespnse getBookingResponse(Booking booking) {
         return null;
     }
 

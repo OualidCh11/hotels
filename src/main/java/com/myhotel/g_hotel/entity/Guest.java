@@ -26,9 +26,9 @@ public class Guest {
     private String identificationNumber;
 
     @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<BookedRoom> bookedRooms;
+    private List<Booking> bookedRooms;
 
-    public void addBooking(BookedRoom bookedRoom) {
+    public void addBooking(Booking bookedRoom) {
         bookedRooms.add(bookedRoom);
         bookedRoom.setGuest(this);
     }
