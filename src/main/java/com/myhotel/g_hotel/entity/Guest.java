@@ -28,6 +28,11 @@ public class Guest {
     @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Booking> bookedRooms;
 
+    @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Reservation> reservations;
+
+
+
     public void addBooking(Booking bookedRoom) {
         bookedRooms.add(bookedRoom);
         bookedRoom.setGuest(this);
