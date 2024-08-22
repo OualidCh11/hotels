@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,4 +30,13 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guest_id")
     private Guest guest;
+
+    public Reservation() {
+        this.bookings = new ArrayList<>();
+    }
+
+    public void addBooking(Booking booking) {
+        bookings.add(booking);
+        booking.setReservation(this);
+    }
 }

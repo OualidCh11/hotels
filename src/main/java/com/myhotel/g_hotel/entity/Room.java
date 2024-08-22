@@ -29,6 +29,9 @@ public class Room {
     @OneToMany(mappedBy = "room",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Booking> bookedRoomList;
 
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ServiceRequest> serviceRequests;
+
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
