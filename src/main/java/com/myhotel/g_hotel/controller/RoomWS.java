@@ -71,25 +71,26 @@ public class RoomWS {
     }
 
     @PutMapping("/update/{roomId}")
-    public ResponseEntity<RoomResponse> updateRoom(@PathVariable Long roomId ,@RequestParam(required = false) String roomType ,@RequestParam(required = false) BigDecimal priceRoom ,@RequestParam(required = false) MultipartFile photo ) throws IOException, SQLException {
-
-        byte[] photoBytes = photo != null && !photo.isEmpty()?
-                photo.getBytes(): roomService.getRoomPhotoByRoomId(roomId);
-        Blob photoBlob = photoBytes != null && photoBytes.length > 0?new SerialBlob(photoBytes): null;
-        Room theroom = roomService.updateRoom(roomId,roomType,priceRoom,photoBytes);
-        theroom.setPhoto(photoBlob);
-        RoomResponse roomResponse = getRoomRespnse(theroom);
+    public ResponseEntity<RoomResponse> updateRoom(@PathVariable Long roomId,
+                                                   @RequestParam(required = false) String roomType,
+                                                   @RequestParam(required = false) BigDecimal priceRoom,
+                                                   @RequestParam(required = false) MultipartFile photo)
+            throws IOException, SQLException {
+        byte[] photoBytes = photo != null && !photo.isEmpty() ? photo.getBytes() : roomService.getRoomPhotoByRoomId(roomId);
+        Blob photoBlob = photoBytes != null && photoBytes.length > 0 ? new SerialBlob(photoBytes) : null;
+        Room updatedRoom = roomService.updateRoom(roomId, roomType, priceRoom, photoBytes);
+        updatedRoom.setPhoto(photoBlob);
+        RoomResponse roomResponse = getRoomRespnse(updatedRoom);
         return ResponseEntity.ok(roomResponse);
-
     }
 
-    @GetMapping("/get/rooms/{id}")
-    public ResponseEntity<Optional<RoomResponse>> getRoomById(@PathVariable Long roomId){
-        Optional<Room> thrRoom = roomService.getRoomById(roomId);
-        return thrRoom.map(room -> {
+    @GetMapping("/get/rooms/{roomId}")
+    public ResponseEntity<Optional<RoomResponse>> getRoomById(@PathVariable Long roomId) {
+        Optional<Room> theRoom = roomService.getRoomById(roomId);
+        return theRoom.map(room -> {
             RoomResponse roomResponse = getRoomRespnse(room);
             return ResponseEntity.ok(Optional.of(roomResponse));
-        }).orElseThrow(() -> new ResourceNotFoundException("not found room"));
+        }).orElseThrow(() -> new ResourceNotFoundException("Room not found"));
     }
 
     private RoomResponse getRoomRespnse(Room room) {

@@ -34,12 +34,15 @@ public class Booking {
     private int totalNbOfGuest;
     @Column(name = "confirmation_code")
     private String bookingConfirmationCode;
+
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "room_id")
     private Room room;
+
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "guest_id")
     private Guest guest;
+
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
