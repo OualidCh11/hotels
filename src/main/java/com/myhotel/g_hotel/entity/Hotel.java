@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Blob;
 import java.util.List;
 
 @Entity
@@ -23,6 +24,8 @@ public class Hotel {
     private String phoneNumber;
     private String email;
     private Float rating;
+    @Lob
+    private Blob photo;
 
     @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Room> rooms;

@@ -10,6 +10,7 @@ import com.myhotel.g_hotel.service.inter.BookingService;
 import com.myhotel.g_hotel.service.inter.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +30,10 @@ import java.util.Optional;
 @RequestMapping("/rooms")
 public class RoomWS {
 
-    private final RoomService roomService;
-    private final BookingService bookingService;
+    @Autowired
+    private RoomService roomService;
+    @Autowired
+    private BookingService bookingService;
     @PostMapping("/add/new_room")
     public ResponseEntity<RoomResponse> addNewRoom(
             @RequestParam("photo")MultipartFile photo,
