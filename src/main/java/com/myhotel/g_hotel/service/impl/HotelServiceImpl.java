@@ -1,6 +1,7 @@
 package com.myhotel.g_hotel.service.impl;
 
 import com.myhotel.g_hotel.entity.Hotel;
+import com.myhotel.g_hotel.entity.Room;
 import com.myhotel.g_hotel.exception.ResourceNotFoundException;
 import com.myhotel.g_hotel.repository.HotelDao;
 import com.myhotel.g_hotel.service.inter.HotelService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +56,19 @@ public class HotelServiceImpl implements HotelService {
         if (hotelDetails.getPhoto() != null) existingHotel.setPhoto(hotelDetails.getPhoto());
 
         return hotelDao.save(existingHotel);
+    }
+
+    @Override
+    public byte[] getHotelPhotoByHotelId(Long id) throws SQLException {
+        Optional<Hotel> theHotel = hotelDao.findById(id);
+        if (theHotel.isEmpty()){
+            throw new ResourceNotFoundException("Hotel not found");
+        }
+        Blob photoBlob = theHotel.get().getPhoto();
+        if (photoBlob != null){
+            return photoBlob.getBytes(1,(int) photoBlob.length());
+        }
+        return null;
     }
 
     @Override

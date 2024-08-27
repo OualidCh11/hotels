@@ -37,6 +37,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<String> getAllRoomType() {
+
         return roomDao.findByRoomType();
     }
 

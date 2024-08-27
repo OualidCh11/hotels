@@ -22,7 +22,7 @@ public class HotelRespse {
     private String photo;
     private List<Room> rooms;
 
-    public HotelRespse( String name, String address, String phoneNumber, String email, Float rating, String photo, List<Room> rooms) {
+    public HotelRespse(String name, String address, String phoneNumber, String email, Float rating, String photo, List<Room> rooms) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -31,4 +31,5 @@ public class HotelRespse {
         this.photo = photo;
         this.rooms = rooms;
     }
-    }
+
+}
