@@ -16,4 +16,6 @@ public class SecurityConfig {
 
     @Autowired
     private final CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private final JwtAuthFilter jwtAuthFilter;
 }
