@@ -25,47 +25,49 @@ public class BookingWS {
     private final BookingService bookingService;
     private final RoomService roomService;
 
-    @GetMapping("all_booking")
-    public ResponseEntity<List<BookingRespnse>> getAllBooking(){
+    @GetMapping("/all_booking")
+    public ResponseEntity<List<BookingRespnse>> getAllBooking() {
         List<Booking> bookedRooms = bookingService.getAllBoking();
-        List<BookingRespnse> bookingRespns = new ArrayList<>();
-        for(Booking bookedRoom: bookedRooms){
-            BookingRespnse bookingRespnse = getBookedRoomRespnse(bookedRoom);
-            bookingRespns.add(bookingRespnse);
+        List<BookingRespnse> bookingResponses = new ArrayList<>();
+        for (Booking bookedRoom : bookedRooms) {
+            BookingRespnse bookingResponse = getBookedRoomResponse(bookedRoom);
+            bookingResponses.add(bookingResponse);
         }
-        return ResponseEntity.ok(bookingRespns);
+        return ResponseEntity.ok(bookingResponses);
     }
 
+
     @GetMapping("/confirmation")
-    public ResponseEntity<?> getBookingByConfirmationCode(String confirmationCode){
+    public ResponseEntity<?> getBookingByConfirmationCode(@RequestParam String confirmationCode) {
         try {
             Booking bookedRoom = bookingService.findByConfirmationCode(confirmationCode);
-            BookingRespnse bookingRespnse = getBookingResponse(bookedRoom);
-            return ResponseEntity.ok(bookingRespnse);
-        }catch (ResourceNotFoundException ex){
+            BookingRespnse bookingResponse = getBookedRoomResponse(bookedRoom);
+            return ResponseEntity.ok(bookingResponse);
+        } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
 
 
-    @GetMapping("/room/{roomId}/booking ")
-    public ResponseEntity<?> saveBooking(@PathVariable Long roomId ,
-                                         @RequestBody Booking bookedRoomRequest){
+    @PostMapping("/room/{roomId}/booking")
+    public ResponseEntity<?> saveBooking(@PathVariable Long roomId,
+                                         @RequestBody Booking bookedRoomRequest) {
         try {
-            String confirmationCode = bookingService.saveBooking(roomId , bookedRoomRequest);
-            return ResponseEntity.ok("Room booked successfully ,your code confirmation is:"+confirmationCode);
-        }catch (InvalidBookingException ex){
+            String confirmationCode = bookingService.saveBooking(roomId, bookedRoomRequest);
+            return ResponseEntity.ok("Room booked successfully, your confirmation code is: " + confirmationCode);
+        } catch (InvalidBookingException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
 
-    @DeleteMapping("/booking/{bookingId}/delete")
-    public void cancelBooking(Long bookingId){
-           bookingService.cancelBooking(bookingId);
+    @DeleteMapping("/{bookingId}/delete")
+    public ResponseEntity<Void> cancelBooking(@PathVariable Long bookingId) {
+        bookingService.cancelBooking(bookingId);
+        return ResponseEntity.noContent().build();
     }
-
-    private BookingRespnse getBookedRoomRespnse(Booking bookedRoom) {
-        Room theRoom = roomService.getRoomById(bookedRoom.getRoom().getId()).get();
+    private BookingRespnse getBookedRoomResponse(Booking bookedRoom) {
+        Room theRoom = roomService.getRoomById(bookedRoom.getRoom().getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Room not found"));
         RoomResponse roomResponse = new RoomResponse(
                 theRoom.getId(),
                 theRoom.getRoomType(),
@@ -78,14 +80,14 @@ public class BookingWS {
                 bookedRoom.getGuestFullName(),
                 bookedRoom.getGuestEmail(),
                 bookedRoom.getNbOfAdults(),
-                bookedRoom.getNbOfChildren(),bookedRoom.getTotalNbOfGuest(),
-                bookedRoom.getBookingConfirmationCode(),roomResponse
+                bookedRoom.getNbOfChildren(),
+                bookedRoom.getTotalNbOfGuest(),
+                bookedRoom.getBookingConfirmationCode(),
+                roomResponse
         );
     }
 
-    private BookingRespnse getBookingResponse(Booking booking) {
-        return null;
-    }
+
 
 }
 

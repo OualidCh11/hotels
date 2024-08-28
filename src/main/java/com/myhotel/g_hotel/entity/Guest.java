@@ -1,16 +1,12 @@
 package com.myhotel.g_hotel.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "guest")
@@ -24,6 +20,7 @@ public class Guest {
     private String lastName;
     private String email;
     private String phoneNumber;
+    private String role;
     private String password;
     private String address;
     private String identificationNumber;
